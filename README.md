@@ -15,20 +15,22 @@ Se nos pide como desarrolladores, crear una aplicación web con Python para una 
 ###	STACK TECNOLÓGICO
 Lenguaje de programación: Python
 
-![](../../AppData/Local/Temp/python-logo.png)
+![](https://www.python.org/static/img/python-logo.png)
 
 
 FrameWork: Flask – Motor de templates: Jinja2
 
-![](../../AppData/Local/Temp/flask-logo.webp)
+![](https://flask.palletsprojects.com/en/2.2.x/_images/flask-logo.png)
 
 Base de datos: Sqlite3
 
-![](../../AppData/Local/Temp/sqlite370_banner.gif)
+![](https://www.sqlite.org/images/sqlite370_banner.gif)
 
 Lenguaje de acceso a BBDD: Sqlalchemy (ORM)
 
-![](../../AppData/Local/Temp/sqla_logo.png)
+![](https://www.sqlalchemy.org/img/sqla_logo.png)
+
+
 
 ### INSTALACIÓN
 #### 1.-	Copia de ficheros
