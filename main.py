@@ -153,7 +153,6 @@ def registro():
         else:
             rol = 3
 
-        print("ROLLLLL ELEGIDO:", rol)
         # generamos la password_hash
 
         hash_password = generate_password_hash(form.password.data)
@@ -168,11 +167,9 @@ def registro():
         db.session.commit()
         db.session.close()
 
-        print("NOMBRE DE USUARIO:_____________", form.username.data)
         # consultamos el registro dado de alta en usuarios para saber que id le ha asignado.
         query = db.session.query(User).filter_by(username=form.username.data).first()
 
-        print(query.id)
 
         id = None
         nombre = form.nombre.data
@@ -184,10 +181,8 @@ def registro():
         telefono = form.telefono.data
         if rol == 2:
             nuevo_registro = Cliente(id, nombre, cif, direccion, cp, locProv, telefono, email, query.id)
-            print("Nuevo registro ---------------------->:", nuevo_registro)
         else:
             nuevo_registro = Proveedor(id, nombre, cif, direccion, cp, locProv, email, telefono, query.id)
-            print(nuevo_registro)
 
         db.session.add(nuevo_registro)
         db.session.commit()
@@ -207,7 +202,7 @@ def registro():
 @login_required
 def datos_proveedor():
     user_id = current_user.id
-    #print("USER ID DE DATOS PROVEEDOR", user_id)
+
     proveedor = db.session.query(Proveedor).filter(Proveedor.userIdProv == user_id).first()
     form = FormDatosProveedor()
 
@@ -423,7 +418,6 @@ def clien_deleteproducto(id):
             producto.stockProd += 1
             db.session.commit()
 
-    print("Carrito eliminacion de producto", datos_carrito )
 
     response = make_response(redirect(url_for('clien_tiendacliente')))
     response.set_cookie(str(current_user.id), json.dumps(datos_carrito))
@@ -480,11 +474,9 @@ def admin_administrador():
 @app.route('/admin_crearadministrador', methods=['GET', 'POST'])
 @login_required
 def admin_crearadministrador():
-    print("AQUI LLEGO")
+
     form=FormAdminCrearAdministrador()
     if form.validate_on_submit():
-        print("validate")
-        print(form.username.data)
 
         hash_password = generate_password_hash(form.password.data)
 
@@ -673,7 +665,6 @@ def admin_altaproducto():
         nuevo_producto = Producto(None, nombre, descripcion, precioventa, preciocompra, stock, stockmax, ubicacion,
                                   proveedor_id, categoria_id,ruta_imagen)
 
-        print(nuevo_producto)
         db.session.add(nuevo_producto)
         db.session.commit()
 
@@ -906,7 +897,6 @@ def admin_grafcompras():
                                 .limit(10).all()
     #crear_graf(query, "ventas")
     graf_ventas = crear_graf(query, "ventas")
-    print("HAY GRAFICO Ventas?", graf_ventas)
 
     # ----------------------------GRAFICO DE COMPRAS --------------------------
     query = db.session.query(Compras.prodIdComp, Producto.nombreProd, \
@@ -917,9 +907,10 @@ def admin_grafcompras():
         .order_by(desc('total_cantidades')) \
         .limit(10).all()
     graf_compras=crear_graf(query, "compras")
-    print("HAY GRAFICO COMPRAS?", graf_compras)
+
 
     # ----------------------------GRAFICO DE Bºs en %--------------------------
+    graf_benefic=None
     beneficios_join = db.session.query(Ventas.prodIdVent, Producto.nombreProd, \
                                     Compras.pUnidadComp,
                                    func.sum(Ventas.cantidadVent).label('total_cantidades'), \
@@ -932,13 +923,14 @@ def admin_grafcompras():
 
     productos = []
     beneficio=[]
+    for i in beneficios_join:
+        productos.append(i[1])
+        beneficio.append( round(i[4] - i[2] * i[3], 2) )
+
     if len(productos) < 1 or len(beneficio) < 1:
         graf_benefic = False
     else:
-        for i in beneficios_join:
 
-            productos.append(i[1])
-            beneficio.append(i[4]-i[2]*i[3])
 
         #contruimos un desfase para poder separar el sector con mayor Bº y para ello buscamos el indice del valor
         #maximo de beneficio
@@ -964,7 +956,6 @@ def admin_grafcompras():
         # Eliminamos la grafica creada en memoria
         plt.clf()
 
-    print("ANTES DE ENVIAR:", graf_compras, "y:", graf_ventas)
     return render_template("admin/admin_grafcompras.html", compras=graf_compras, ventas=graf_ventas, benef=graf_benefic)
 
 
@@ -974,9 +965,8 @@ def upload_imagen(imagen, id):
     nombre_imagen = secure_filename(str(id) + '_' + imagen.filename)
     ruta_imagen = os.path.join(app.config["UPLOAD_FOLDER"]+'\\uploads\\{}'.format(nombre_imagen))
     imagen.save(ruta_imagen)
-    print("RUTA:", ruta_imagen)
     nombre_imagen="..\\"+ruta_imagen
-    print(nombre_imagen)
+
     return nombre_imagen
 
 #Lista de productos segun categoria
@@ -1005,28 +995,23 @@ def filtra_categoria(nombre):
         i= db.session.query(Categoria.id_categoria).filter(Categoria.nombreCate == nombre).first()
         categoria=i.id_categoria
 
-    print("FILTRA:", categoria)
 
     return redirect(url_for("clien_tiendacliente", categoria=categoria))
 
 #creacion de graficas
 def crear_graf(query,grafico):
-    print("-------------CREAR GRAFICAS -------------")
-    print(current_user.rol_id)
-    print (query)
+
     if current_user.rol_id == 1:
         productos=[]
         unidades=[]
-        print(len(productos), len(unidades))
+
         for i in query:
-            print(i)
+            #print(i)
             productos.append(i[1])
             unidades.append(i[2])
         if len(productos) < 1 or len(unidades) < 1:
-            print("no hay datos")
             return False
 
-        print("G.:, ", productos)
         # Obtenemos una lista con las posiciones de cada articulo(producto), asignandole (0,1,2...9)
         x_pos = np.arange(len(productos))
 
@@ -1037,9 +1022,8 @@ def crear_graf(query,grafico):
         plt.xticks(x_pos, productos, rotation=45, ha='right')
 
         # añadimos las etiquetas de las cantidades vendidas
-        print(grafico)
-        if grafico=="ventas":
 
+        if grafico=="ventas":
             plt.ylabel('Unidades Vendidas')
             plt.xlabel('Productos')
             # añadimos el titulo al gráfico
@@ -1048,6 +1032,7 @@ def crear_graf(query,grafico):
             plt.savefig('static/graph/admin_10ventas.png', bbox_inches='tight')
             # Eliminamos la grafica creada en memoria
             plt.clf()
+
         if grafico=="compras":
             plt.ylabel('Unidades Compradas')
             plt.xlabel('Productos')
@@ -1057,14 +1042,14 @@ def crear_graf(query,grafico):
             plt.savefig('static/graph/admin_10compras.png', bbox_inches='tight')
             # Eliminamos la grafica creada en memoria
             plt.clf()
+
     if current_user.rol_id == 2:
         productos = []
         unidades = []
         for i in query:
-            print(i)
             productos.append(i[1])
             unidades.append(i[2])
-        print("G.:, ", productos)
+
         # Obtenemos una lista con las posiciones de cada articulo(producto), asignandole (0,1,2...9)
         x_pos = np.arange(len(productos))
 
@@ -1075,7 +1060,7 @@ def crear_graf(query,grafico):
         plt.xticks(x_pos, productos, rotation=45, ha='right')
 
         # añadimos las etiquetas de las cantidades vendidas
-        print(grafico)
+
 
         plt.ylabel('Unidades Compradas')
         plt.xlabel('Productos')
@@ -1088,14 +1073,13 @@ def crear_graf(query,grafico):
         # Eliminamos la grafica creada en memoria
         plt.clf()
     if current_user.rol_id == 3:
-        print("GRAFICA DEL PROVEEDOR")
+
         productos = []
         unidades = []
         for i in query:
-            print(i)
             productos.append(i[1])
             unidades.append(i[2])
-        print("G.:, ", productos)
+
         # Obtenemos una lista con las posiciones de cada articulo(producto), asignandole (0,1,2...9)
         x_pos = np.arange(len(productos))
 
@@ -1106,7 +1090,7 @@ def crear_graf(query,grafico):
         plt.xticks(x_pos, productos, rotation=45, ha='right')
 
         # añadimos las etiquetas de las cantidades vendidas
-        print(grafico)
+
         plt.ylabel('Unidades Vendidas')
         plt.xlabel('Productos')
         # añadimos el titulo al gráfico
