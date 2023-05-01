@@ -1,0 +1,306 @@
+{% extends './base.html' %}
+{% block customCss %}<link rel="stylesheet" href="{{ url_for('static', filename='css/lionweb.css' )}}">{% endblock %}
+{% block title%}Home{% endblock %}
+{% block header%}
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="nav-item dropdown " >
+
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    <img src="{{url_for('static', filename='img/person.png')}}"alt="perfil" width="50" height="50">Bienvenido {{current_user.username}}
+                </a>
+
+            <div class="dropdown-menu dropdown-menu-dark">
+
+                    {% if current_user.rol_id == 1 %}
+
+
+                    <a class="dropdown-header text-muted" style="font-weight:bold;text-decoration:none; disable">PERFIL: Administrador</a>
+                    <a class="dropdown-item" href="/home">Inicio</a>
+                    <a class="dropdown-item" href="/admin_administrador">Administradores</a>
+
+                    <a class="dropdown-item" href="/admin_proveedores">Proveedores</a>
+                    <a class="dropdown-item" href="/admin_clientes">Clientes</a>
+                    <a class="dropdown-item" href="/admin_productos">Productos</a>
+                    <a class="dropdown-item" href="/admin_categorias">Categorias</a>
+
+                    <div class="dropdown-divider" style="background-color:white;"></div>
+                    <a class="dropdown-item" href="/admin_grafcompras">Gr&aacute;ficas</a>
+                    {% elif current_user.rol_id == 2 %}
+
+                    <a class="dropdown-header text-muted" style="font-weight:bold;text-decoration:none; disable">PERFIL: Cliente</a>
+                    <a class="dropdown-item" href="/home">Inicio</a>
+                    <a class="dropdown-item" href="/clien_datoscliente/{{current_user.id}}">Datos cliente</a>
+                    <a class="dropdown-item" href="/clien_tiendacliente">Tienda</a>
+                   <div class="dropdown-divider" style="background-color:white;"></div>
+                    <a class="dropdown-item" href="/clien_graficos">Gr&aacute;ficas</a>
+                    {% else %}
+
+                    <a class="dropdown-header text-muted" style="font-weight:bold;text-decoration:none; disable">PERFIL: Proveedor</a>
+                    <a class="dropdown-item" href="/home">Inicio</a>
+                    <a class="dropdown-item" href="/datos_proveedor">Datos Proveedor</a>
+                   <div class="dropdown-divider" style="background-color:white;"></div>
+                    <a class="dropdown-item" href="/provee_graficos">Gr&aacute;ficas</a>
+
+
+                    {% endif %}
+                    <div class="dropdown-divider" style="background-color:white;"></div>
+                    <a class="dropdown-item" href="{{url_for('logout')}}">Logout</a>
+                </div>
+            </div>
+
+
+            <a class="navbar-brand" href="/home"> LION -Soft & Hard-
+                <img src="../static/img/lion.jpg" alt="logo" width="70" height="70">
+            </a>
+        </div>
+    </nav>
+
+{% endblock %}
+{% block body %}
+<div class="container rounded bg-white mt-1 mb-1">
+{% if current_user.rol_id == 1 %}
+
+     <h3 class="h3 mt-2 mb-2 fw-normal">Relaci&oacute;n de Compras realizadas &uacute;ltimo mes</h3>
+      <table id="tablacompras" class="table table-bordered border-black display responsive nowrap ">
+
+        <thead style="background-color:rgba(253,126,20,0.65); " >
+
+                <th>FECHA</th>
+                <th>PRODUCTO</th>
+                <th>CANTIDAD</th>
+                <th>P. UNIDAD</th>
+                <th>PROVEEDOR</th>
+                <th>CATEGORIA</th>
+            </thead>
+            <tbody>
+             {% if compras !=None: %}
+                {% for compra in compras: %}
+
+                <tr>
+
+                    <td align="center">{{compra.fechaComp.strftime('%d-%m-%Y')}}</td>
+                    <td align="left">{{compra.nomProdComp.nombreProd}}</td>
+                    <td align="right">{{compra.cantidadComp}}</td>
+                    <td align="right">{{"%.2f"|format(compra.pUnidadComp)}}</td>
+                    <td align="left">{{compra.nomProvComp.nombreProv}}</td>
+                    <td align="left">{{compra.nomCateComp.nombreCate}}</td>
+
+
+                </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+    </table>
+    {% if compras ==None: %}
+
+                        <h4>No ha realizado compras en el &uacute;timo mes</h4>
+    {% endif %}
+<div>&nbsp;</div>
+
+
+
+
+     <h3 class="h3 mt-2 mb-2 fw-normal">Relaci&oacute;n de Ventas realizadas &uacute;ltimo mes</h3>
+          <table id="tablaventas" class="table table-bordered border-black display responsive nowrap">
+
+            <thead style="background-color:rgba(253,126,20,0.65); " >
+                    <th>FECHA</th>
+                    <th>PRODUCTO</th>
+                    <th>CANTIDAD</th>
+                    <th>P. UNIDAD</th>
+                    <th>CLIENTE</th>
+                    <th>CATEGORIA</th>
+
+                </thead>
+                <tbody>
+                {% if ventas !=None: %}
+                    {% for venta in ventas: %}
+
+                    <tr>
+
+                        <td align="center">{{venta.fechaVent.strftime('%d-%m-%Y')}}</td>
+                        <td align="left">{{venta.nomProdVent.nombreProd}}</td>
+                        <td align="right">{{venta.cantidadVent}}</td>
+                        <td align="right">{{"%.2f"|format(venta.pUnidadVent)}}</td>
+                        <td align="left">{{venta.nomClieVent.nombreClie}}</td>
+                        <td align="left">{{venta.nomCateVent.nombreCate}}</td>
+
+
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+
+                </tbody>
+        </table>
+        {% if ventas ==None: %}
+
+                            <h4>No ha realizado ventas en el &uacute;timo mes</h4>
+        {% endif %}
+
+    <div>&nbsp;</div>
+
+{% endif %}
+{% if current_user.rol_id == 2 %}
+
+     <h3 class="h3 mt-2 mb-2 fw-normal">Relaci&oacute;n de Compras realizadas &uacute;ltimo mes</h3>
+          <table id="tablacompras" class="table table-bordered border-black display responsive nowrap">
+
+            <thead style="background-color:rgba(253,126,20,0.65); " >
+                    <th>FECHA</th>
+                    <th>PRODUCTO</th>
+                    <th>CANTIDAD</th>
+                    <th>P. UNIDAD</th>
+                    <th>CATEGORIA</th>
+
+                </thead>
+                <tbody>
+                    {% if ventas !=None: %}
+                        {% for venta in ventas: %}
+                        <tr>
+
+                            <td align="center">{{venta.fechaVent.strftime('%d-%m-%Y')}}</td>
+                            <td align="left">{{venta.nomProdVent.nombreProd}}</td>
+                            <td align="right">{{venta.cantidadVent}}</td>
+                            <td align="right">{{"%.2f"|format(venta.pUnidadVent)}}</td>
+
+                            <td align="left">{{venta.nomCateVent.nombreCate}}</td>
+
+
+                        </tr>
+                        {% endfor %}
+
+                    {% endif %}
+                </tbody>
+        </table>
+        {% if ventas ==None: %}
+
+                            <h4>No ha realizado compras en el &uacute;timo mes</h4>
+        {% endif %}
+    <div>&nbsp;</div>
+
+
+
+{% endif %}
+
+{% if current_user.rol_id == 3 %}
+
+     <h3 class="h3 mt-2 mb-2 fw-normal">Relaci&oacute;n de Ventas realizadas &uacute;ltimo mes</h3>
+          <table id="tablacompras" class="table table-bordered border-black display responsive nowrap">
+
+            <thead style="background-color:rgba(253,126,20,0.65); " >
+                    <th>FECHA</th>
+                    <th>PRODUCTO</th>
+                    <th>CANTIDAD</th>
+                    <th>P. UNIDAD</th>
+                    <th>CATEGORIA</th>
+                </thead>
+                <tbody>
+                 {% if ventas !=None: %}
+                    {% for venta in ventas: %}
+
+                    <tr>
+
+                        <td align="center">{{venta.fechaComp.strftime('%d-%m-%Y')}}</td>
+                        <td align="left">{{venta.nomProdComp.nombreProd}}</td>
+                        <td align="right">{{venta.cantidadComp}}</td>
+                        <td align="right">{{"%.2f"|format(venta.pUnidadComp)}}</td>
+
+                        <td align="left">{{venta.nomCateComp.nombreCate}}</td>
+
+
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+        </table>
+        {% if ventas ==None: %}
+
+                            <h4>No ha realizado ventas en el &uacute;timo mes</h4>
+        {% endif %}
+    <div>&nbsp;</div>
+
+
+
+{% endif %}
+
+
+
+</div>
+<!-- JQUERY -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <!-- DATATABLES -->
+        <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <!-- BOOTSTRAP -->
+        <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+
+
+        <script>
+            $(document).ready(function () {
+                $('#tablacompras').DataTable({
+
+                    language: {
+
+                        processing: "Tratamiento en curso...",
+                        search: "Buscar:",
+                        lengthMenu: "Agrupar de _MENU_ items",
+                        info: "Mostrando del registro _START_ al _END_ de un total de _TOTAL_ registros",
+                        lengthMenu: "Agrupar de _MENU_ items",
+                        infoEmpty: "No existen datos.",
+                        infoFiltered: "(filtrado de _MAX_ elementos en total)",
+                        infoPostFix: "",
+                        loadingRecords: "Cargando...",
+                        zeroRecords: "No se encontraron datos con tu busqueda",
+                        emptyTable: "No hay datos disponibles en la tabla.",
+                        paginate: {
+                            first: "Primero",
+                            previous: "Anterior",
+                            next: "Siguiente",
+                            last: "Ultimo"
+                        },
+                        aria: {
+                            sortAscending: ": active para ordenar la columna en orden ascendente",
+                            sortDescending: ": active para ordenar la columna en orden descendente"
+                        }
+                    },
+                    scrollY: 400,
+                    lengthMenu: [ [10, 20, -1], [10, 20, "Todos"] ],
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('#tablaventas').DataTable({
+
+                    language: {
+
+                        processing: "Tratamiento en curso...",
+                        search: "Buscar:",
+                        lengthMenu: "Agrupar de _MENU_ items",
+                        info: "Mostrando del registro _START_ al _END_ de un total de _TOTAL_ registros",
+                        lengthMenu: "Agrupar de _MENU_ items",
+                        infoEmpty: "No existen datos.",
+                        infoFiltered: "(filtrado de _MAX_ elementos en total)",
+                        infoPostFix: "",
+                        loadingRecords: "Cargando...",
+                        zeroRecords: "No se encontraron datos con tu busqueda",
+                        emptyTable: "No hay datos disponibles en la tabla.",
+                        paginate: {
+                            first: "Primero",
+                            previous: "Anterior",
+                            next: "Siguiente",
+                            last: "Ultimo"
+                        },
+                        aria: {
+                            sortAscending: ": active para ordenar la columna en orden ascendente",
+                            sortDescending: ": active para ordenar la columna en orden descendente"
+                        }
+                    },
+                    scrollY: 400,
+                    lengthMenu: [ [10, 20, -1], [10, 20, "Todos"] ],
+                });
+            });
+        </script>
+{% endblock %}
+

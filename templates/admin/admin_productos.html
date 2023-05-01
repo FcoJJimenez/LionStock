@@ -1,0 +1,156 @@
+{% extends './home.html' %}
+{% block body %}
+
+<div class="container rounded bg-white mt-1 mb-1">
+    <h3 class="h3 mt-2 mb-2 fw-normal">Administraci&oacute;n Productos</h3>
+
+     <form action="/admin_productos" method="POST">
+         {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+
+        <div class="alert alert-dismissible alert-danger" role="alert">
+          <strong>{{message}}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <table id="tablaprod" class="table table-bordered border-black display responsive nowrap ">
+            {{form.hidden_tag()}}
+            <thead style="background-color:rgba(253,126,20,0.65); " >
+
+                    <th class="all" >{{form.nombre.label}}</th>
+                    <th class="all">{{form.categoria.label}}</th>
+                    <th>{{form.ubicacion.label}}</th>
+                    <th>{{form.proveedor_id.label}}</th>
+                    <th>{{form.precio_venta.label}}</th>
+                    <th class="none">{{form.descripcion.label}}</th>
+                    <th class="none">{{form.precio_compra.label}}</th>
+                    <th class="none">{{form.stock.label}}</th>
+                    <th class="none">{{form.stockmax.label}}</th>
+
+                    <th class="none">{{form.imagen.label}}</th>
+
+                    <th class="all" data-orderable="false">Acciones</th>
+                </thead>
+                <tbody>
+                    {% for prod, prov, cate in productos: %}
+                    <tr>
+                        <td align="left">{{prod.nombreProd}}</td>
+                        <td align="left">{{cate.nombreCate}}</td>
+                        <td align="left">{{prod.ubicaProd}}</td>
+                        <td align="left">{{prov.nombreProv}}</td>
+                        <td align="right">{{"%.2f"|format(prod.pVentaProd)}}</td>
+                        <td align="left">{{prod.descProd}}</td>
+                        <td align="right">{{"%.2f"|format(prod.pCompraProd)}}</td>
+                        <td align="right">{{prod.stockProd}}</td>
+                        <td align="right">{{prod.sMaxProd}}</td>
+
+                        <td align="center">
+                            <img class="img-fluid mt-1" style="width: 50px;" src="{% if prod.imgProd %}{{prod.imgProd}}{% else %}{{url_for('static', filename='img/noimagen.png')}} {% endif %}" alt="">
+
+                        </td>
+                        <td>
+                            <a href="/admin_datosproducto/{{prod.id_producto}}" style="text-decoration:none" data-toggle="tooltip" title="Modificar">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="blue" class="bi bi-pencil-square" viewBox="0 0 16 16" >
+                                      <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                      <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                </svg>
+                            </a>
+
+
+                            <a href="/admin_comprarproducto/{{prod.id_producto}}" style="text-decoration:none" data-toggle="tooltip" title="Stock - comprar">
+                                {% if prod.stockProd > prod.sMaxProd * 0.2 %}
+
+
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-arrow-up-square-fill" viewBox="0 0 16 16">
+                                    <path d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z"/>
+                                </svg>
+
+                                {% else %}
+
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-arrow-down-square-fill" viewBox="0 0 16 16">
+                                  <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5a.5.5 0 0 1 1 0z"/>
+                                </svg>
+
+                                {% endif %}
+                            </a>
+
+
+                             <a href="/admin_deleteproducto/{{prod.id_producto}}" style="text-decoration:none" data-toggle="tooltip" title="Eliminar">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                </svg>
+                            </a>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+        </table>
+            <div class="row">
+                <div class="text-center mb-2">
+                    {{form.submit (class="btn btn-primary profile-button")}}
+                    <a class="btn btn-primary"  href="/home">Cancelar</a>
+                </div>
+            </div>
+
+
+<!-- Modal -->
+
+
+
+        <!-- JQUERY -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <!-- DATATABLES -->
+        <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <!-- BOOTSTRAP -->
+        <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+
+
+        <script>
+            $(document).ready(function () {
+                $('#tablaprod').DataTable({
+
+                    language: {
+
+                        processing: "Tratamiento en curso...",
+                        search: "Buscar:",
+                        lengthMenu: "Agrupar de _MENU_ items",
+                        info: "Mostrando del registro _START_ al _END_ de un total de _TOTAL_ registros",
+                        lengthMenu: "Agrupar de _MENU_ items",
+                        infoEmpty: "No existen datos.",
+                        infoFiltered: "(filtrado de _MAX_ elementos en total)",
+                        infoPostFix: "",
+                        loadingRecords: "Cargando...",
+                        zeroRecords: "No se encontraron datos con tu busqueda",
+                        emptyTable: "No hay datos disponibles en la tabla.",
+                        paginate: {
+                            first: "Primero",
+                            previous: "Anterior",
+                            next: "Siguiente",
+                            last: "Ultimo"
+                        },
+                        aria: {
+                            sortAscending: ": active para ordenar la columna en orden ascendente",
+                            sortDescending: ": active para ordenar la columna en orden descendente"
+                        }
+                    },
+                    scrollY: 400,
+                    lengthMenu: [ [10, 20, -1], [10, 20, "Todos"] ],
+                });
+            });
+        </script>
+
+    </form>
+</div>
+
+
+{% endblock %}
+
+
+

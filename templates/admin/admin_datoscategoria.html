@@ -1,0 +1,32 @@
+{% extends './home.html' %}
+
+{% block body %}
+
+<div class="container rounded bg-white mt-1 mb-1">
+    <h3 class="h3 mt-2 mb-2 fw-normal">Datos Categor&iacute;a</h3>
+
+    <form action="/admin_datoscategoria/{{categoria.id_categoria}}" method="POST">
+            <div class="col-md-12 border-left border-right">
+                <div class="p-3 py-10">
+                    {{form.hidden_tag()}}
+
+
+
+                    <div class="form-floating mb-2">
+                        {{form.nombre (class="form-control")}}
+                                 {{form.nombre.label}}
+                    </div>
+
+
+                <div class="row">
+                    <div class="text-center mb-2">
+                        {{form.submit (class="btn btn-primary profile-button")}}
+                        <a class="btn btn-primary"  href="/admin_categorias">Cancelar</a>
+
+
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+{% endblock %}

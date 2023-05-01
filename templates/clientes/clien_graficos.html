@@ -1,0 +1,10 @@
+{% extends './home.html' %}
+
+
+{% block body %}
+<div class="container rounded bg-white mt-1 mb-1">
+    <h3 class="h3 mt-2 mb-2 fw-normal">Gr&aacute;ficas</h3>
+
+        <img src="{{ url_for('static', filename=fichero)}}" >
+</div>
+{% endblock %}

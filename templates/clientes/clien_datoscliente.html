@@ -1,0 +1,69 @@
+{% extends './home.html' %}
+
+
+{% block body %}
+<div class="container rounded bg-white mt-1 mb-1">
+    <h3 class="h3 mt-2 mb-2 fw-normal">Datos Cliente</h3>
+    <form class="row " action="/clien_datoscliente/{{cliente.userIdClie}}" method="POST">
+            <div class="col-md-12 border-left border-right">
+                <div class="p-3 py-10">
+                    {{form.hidden_tag()}}
+                    <div class="col-6 form-floating mb-2">
+                        {{form.cif_nif (class="form-control")}}
+                        {{form.cif_nif.label}}
+                    </div>
+
+                     <div class="form-floating mb-2">
+                        {{form.nombre (class="form-control")}}
+                         {{form.nombre.label}}
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        {{form.direccion (class="form-control")}}
+                        {{form.direccion.label}}
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-3 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.cod_post (class="form-control")}}
+                                {{form.cod_post.label}}
+                            </div>
+                        </div>
+                        <div class="col-9 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.localidad (class="form-control")}}
+                                {{form.localidad.label}}
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 md-6">
+                            <div class="form-floating">
+                                {{form.telefono (class="form-control")}}
+                                 {{form.telefono.label}}
+                            </div>
+                        </div>
+                        <div class="col-9 md-6">
+                            <div class="form-floating">
+                                {{form.email (class="form-control")}}
+                                {{form.email.label}}
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="text-center mb-2">
+                        {{form.submit (class="btn btn-primary profile-button")}}
+                        <a class="btn btn-primary" href="/home">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+{% endblock %}

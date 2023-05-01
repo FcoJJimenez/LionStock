@@ -1,0 +1,54 @@
+{% extends './base.html' %}
+<!--Custom CSS-->
+{% block customCss %}<link rel="stylesheet" href="{{ url_for('static', filename='css/lionweb.css' )}}">{% endblock %}
+{% block title %}Control Panel{% endblock %}
+
+{% block body %}
+<div class="container text-center d-flex flex-column ">
+    <a class="mb-4 text-start" href="/home"><img src="{{url_for('static', filename='image/volver.png')}}" width="50" height="50"></a>
+    <div class="mb-3">
+        <h1>Administraci&oacute;n - Panel de control</h1>
+    </div>
+    <div>
+        <a type="button" class="btn btn-primary mb-3" href="/crear-producto">Nuevo producto</a>
+    <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Facturación Total
+        </button>
+    </div>
+    <div class="d-flex justify-content-center">
+        <div class="card" style="width: 18rem;">
+            <div class="card-header">
+                Proveedores
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for supplier in all_supplier: %}
+                <li class="list-group-item">{{supplier}}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Facturación</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div>Gastos: {{bills }}</div>
+          <div>Ventas: {{total_sales}}</div>
+          <div>Beneficios: {{invoiced}}</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}

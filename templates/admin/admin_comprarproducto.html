@@ -1,0 +1,82 @@
+{% extends './home.html' %}
+
+{% block body %}
+
+<div class="container rounded bg-white mt-1 mb-1">
+    <h3 class="h3 mt-2 mb-2 fw-normal">Comprar Producto</h3>
+
+
+    <form action="/admin_comprarproducto/{{producto.id_producto}}" enctype="multipart/form-data" method="POST">
+            <div class="col-md-12 border-left border-right">
+                <div class="p-3 py-10">
+                    {{form.hidden_tag()}}
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h5 class="text-start fw-normal">Producto:</h5>
+                        </div>
+                         <div class="col-md-9" align="left" >
+                            <h5 class="text-start fw-lighter">{{producto.nombreProd}}</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">
+                            <h5 class="text-start fw-normal">Proveedor:</h5>
+                        </div>
+                         <div class="col-md-9" align="left" >
+                            <h5 class="text-start fw-lighter">{{producto.nomProvProd.nombreProv}}</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p></p>
+                        <div class="col-md-3 text-center">
+                            <h5 class="text-decoration-underline">Stock Actual</h5>
+                            <h5 class="fw-lighter">{{producto.stockProd}}</h5>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5 class="text-decoration-underline">Stock Maximo</h5>
+                            <h5 class="fw-lighter">{{producto.sMaxProd}}</h5>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5 class="text-decoration-underline">Precio &Uacute;lt. Compra</h5>
+                            <h5 class="fw-lighter">{{"%.2f"|format(producto.pCompraProd)}}</h5>
+                        </div>
+                        <div class="col-md-3 text-center">
+                            <h5 class="text-decoration-underline">P. Venta P.</h5>
+                            <h5 class="fw-light">{{"%.2f"|format(producto.pVentaProd)}}</h5>
+                        </div>
+                    </div>
+
+
+
+                        <div class="col-4 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.cantidadCompra  (class="form-control")}}
+                                {{form.cantidadCompra.label}}
+                            </div>
+                        </div>
+                         <div class="col-4 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.precioUnidad  (class="form-control")}}
+                                {{form.precioUnidad.label}}
+                            </div>
+                        </div>
+
+
+
+
+                </div>
+
+             </div>
+
+             <div class="row">
+                    <div class="text-center mb-2">
+                        {{form.submit (class="btn btn-primary profile-button")}}
+                        <a class="btn btn-primary"  href="/admin_productos">Cancelar</a>
+
+
+                    </div>
+                </div>
+
+    </form>
+</div>
+{% endblock %}

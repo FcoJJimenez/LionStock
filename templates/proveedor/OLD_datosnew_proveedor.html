@@ -1,0 +1,68 @@
+{% extends './home.html' %}
+
+{% block body %}
+<div class="container rounded bg-white mt-1 mb-1">
+    <h3 class="h3 mt-2 mb-2 fw-normal">Datos Proveedor</h3>
+    <form class="row " action="/datosnew_proveedor" method="POST">
+            <div class="col-md-12 border-left border-right">
+                <div class="p-3 py-10">
+                    {{form.hidden_tag()}}
+                    <div class="col-6 form-floating mb-2">
+                        {{form.cif_nif (class="form-control")}}
+                        <label class="labels">C.I.F.</label>
+                    </div>
+
+                     <div class="form-floating mb-2">
+                        {{form.nombre (class="form-control")}}
+                         <label class="label">Nombre </label>
+                    </div>
+
+                    <div class="form-floating mb-2">
+                        {{form.direccion (class="form-control")}}
+                         <label class="labels">Direcci&oacute;n</label>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-3 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.cod_post (class="form-control")}}
+                                <label class="labels">C&oacute;d. Postal</label>
+                            </div>
+                        </div>
+                        <div class="col-9 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.localidad (class="form-control")}}
+                                <label class="labels">Localidad/Provincia</label>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 md-6">
+                            <div class="form-floating">
+                                {{form.telefono (class="form-control")}}
+                                 <label class="labels">Telefonos</label>
+                            </div>
+                        </div>
+                        <div class="col-9 md-6">
+                            <div class="form-floating">
+                                {{form.email (class="form-control")}}
+                                <label class="labels">Email de Contacto </label>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="text-center mb-2">
+                        {{form.submit (class="btn btn-primary profile-button")}}
+                        <a class="btn btn-primary" href="/home">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+    </form>
+</div>
+{% endblock %}

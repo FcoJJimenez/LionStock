@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Sqlite" id="Project-152c" database="Sqlite" >
+	<schema name="Default" >
+		<table name="categoria" spec="" >
+			<column name="id_categoria" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="nombreCate" type="VARCHAR" length="50" jt="12" />
+			<index name="pk_categoria" unique="PRIMARY_KEY" >
+				<column name="id_categoria" />
+			</index>
+		</table>
+		<table name="cliente" spec="" >
+			<column name="id_cliente" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="nombreClie" type="VARCHAR" length="150" jt="12" />
+			<column name="cifClie" type="VARCHAR" length="10" jt="12" />
+			<column name="direcClie" type="VARCHAR" length="150" jt="12" />
+			<column name="cpClie" type="INTEGER" jt="4" />
+			<column name="locClie" type="VARCHAR" length="150" jt="12" />
+			<column name="tfnoClie" type="VARCHAR" length="20" jt="12" />
+			<column name="emailClie" type="VARCHAR" length="100" jt="12" />
+			<column name="userIdClie" type="INTEGER" jt="4" />
+			<index name="pk_cliente" unique="PRIMARY_KEY" >
+				<column name="id_cliente" />
+			</index>
+			<fk name="FK_cliente users" to_schema="Default" to_table="users" options="" >
+				<fk_column name="userIdClie" pk="id" />
+			</fk>
+		</table>
+		<table name="compras" spec="" >
+			<column name="id_compra" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="cantidadComp" type="INTEGER" jt="4" />
+			<column name="pUnidadComp" type="FLOAT" jt="7" mandatory="y" />
+			<column name="fechaComp" type="DATE" jt="91" />
+			<column name="provIdComp" type="INTEGER" jt="4" />
+			<column name="prodIdComp" type="INTEGER" jt="4" />
+			<column name="cateIdComp" type="INTEGER" jt="4" />
+			<index name="pk_compras" unique="PRIMARY_KEY" >
+				<column name="id_compra" />
+			</index>
+			<fk name="FK_compras proveedor" to_schema="Default" to_table="proveedor" options="" >
+				<fk_column name="provIdComp" pk="id_proveedor" />
+			</fk>
+			<fk name="FK_compras producto" to_schema="Default" to_table="producto" options="" >
+				<fk_column name="prodIdComp" pk="id_producto" />
+			</fk>
+			<fk name="FK_compras categoria" to_schema="Default" to_table="categoria" options="" >
+				<fk_column name="cateIdComp" pk="id_categoria" />
+			</fk>
+		</table>
+		<table name="compraspro" spec="" >
+			<column name="id_compra" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="cantidadComp" type="INTEGER" jt="4" />
+			<column name="pUnidadComp" type="FLOAT" jt="7" mandatory="y" />
+			<column name="fechaComp" type="DATE" jt="91" />
+			<column name="provIdComp" type="INTEGER" jt="4" />
+			<column name="prodIdComp" type="INTEGER" jt="4" />
+			<index name="pk_compraspro" unique="PRIMARY_KEY" >
+				<column name="id_compra" />
+			</index>
+			<fk name="FK_compraspro proveedor" to_schema="Default" to_table="proveedor" options="" >
+				<fk_column name="provIdComp" pk="id_proveedor" />
+			</fk>
+			<fk name="FK_compraspro producto" to_schema="Default" to_table="producto" options="" >
+				<fk_column name="prodIdComp" pk="id_producto" />
+			</fk>
+		</table>
+		<table name="producto" spec="" >
+			<column name="id_producto" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="nombreProd" type="VARCHAR" length="50" jt="12" mandatory="y" />
+			<column name="descProd" type="VARCHAR" length="250" jt="12" mandatory="y" />
+			<column name="pVentaProd" type="FLOAT" jt="7" mandatory="y" />
+			<column name="pCompraProd" type="FLOAT" jt="7" mandatory="y" />
+			<column name="stockProd" type="INTEGER" jt="4" />
+			<column name="sMaxProd" type="INTEGER" jt="4" />
+			<column name="ubicaProd" type="VARCHAR" length="20" jt="12" />
+			<column name="provIdProd" type="INTEGER" jt="4" />
+			<column name="cateIdProd" type="INTEGER" jt="4" />
+			<column name="imgProd" type="VARCHAR" length="30" jt="12" />
+			<index name="pk_producto" unique="PRIMARY_KEY" >
+				<column name="id_producto" />
+			</index>
+			<fk name="FK_producto proveedor" to_schema="Default" to_table="proveedor" options="" >
+				<fk_column name="provIdProd" pk="id_proveedor" />
+			</fk>
+			<fk name="FK_producto categoria" to_schema="Default" to_table="categoria" options="" >
+				<fk_column name="cateIdProd" pk="id_categoria" />
+			</fk>
+		</table>
+		<table name="proveedor" spec="" >
+			<column name="id_proveedor" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="nombreProv" type="VARCHAR" length="150" jt="12" />
+			<column name="cifProv" type="VARCHAR" length="10" jt="12" />
+			<column name="direcProv" type="VARCHAR" length="150" jt="12" />
+			<column name="cpProv" type="INTEGER" jt="4" />
+			<column name="locProv" type="VARCHAR" length="150" jt="12" />
+			<column name="emailProv" type="VARCHAR" length="100" jt="12" />
+			<column name="tfnoProv" type="VARCHAR" length="20" jt="12" />
+			<column name="userIdProv" type="INTEGER" jt="4" />
+			<index name="pk_proveedor" unique="PRIMARY_KEY" >
+				<column name="id_proveedor" />
+			</index>
+			<fk name="FK_proveedor users" to_schema="Default" to_table="users" options="" >
+				<fk_column name="userIdProv" pk="id" />
+			</fk>
+		</table>
+		<table name="rol" spec="" >
+			<column name="id_rol" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="descripcion" type="VARCHAR" length="50" jt="12" />
+			<index name="pk_rol" unique="PRIMARY_KEY" >
+				<column name="id_rol" />
+			</index>
+		</table>
+		<table name="users" spec="" >
+			<column name="id" type="INTEGER" jt="4" mandatory="y" />
+			<column name="username" type="VARCHAR" length="25" jt="12" mandatory="y" />
+			<column name="password" type="VARCHAR" length="102" jt="12" mandatory="y" />
+			<column name="rol_id" type="INTEGER" jt="4" />
+			<index name="pk_users" unique="PRIMARY_KEY" >
+				<column name="id" options=" AUTOINCREMENT" />
+			</index>
+			<index name="ix_users_username" unique="UNIQUE_INDEX" >
+				<column name="username" />
+			</index>
+			<fk name="FK_users rol" to_schema="Default" to_table="rol" options="" >
+				<fk_column name="rol_id" pk="id_rol" />
+			</fk>
+		</table>
+		<table name="ventas" spec="" >
+			<column name="id_ventas" type="INTEGER" jt="4" mandatory="y" >
+				<identity><![CDATA[AUTOINCREMENT]]></identity>
+			</column>
+			<column name="cantidadVent" type="INTEGER" jt="4" />
+			<column name="pUnidadVent" type="FLOAT" jt="7" mandatory="y" />
+			<column name="fechaVent" type="DATE" jt="91" />
+			<column name="prodIdVent" type="INTEGER" jt="4" />
+			<column name="clieIdVent" type="INTEGER" jt="4" />
+			<column name="provIdVent" type="INTEGER" jt="4" />
+			<column name="cateIdVent" type="INTEGER" jt="4" />
+			<index name="pk_ventas" unique="PRIMARY_KEY" >
+				<column name="id_ventas" />
+			</index>
+			<fk name="FK_ventas producto" to_schema="Default" to_table="producto" options="" >
+				<fk_column name="prodIdVent" pk="id_producto" />
+			</fk>
+			<fk name="FK_ventas proveedor" to_schema="Default" to_table="proveedor" options="" >
+				<fk_column name="provIdVent" pk="id_proveedor" />
+			</fk>
+			<fk name="FK_ventas cliente" to_schema="Default" to_table="cliente" options="FOREIGN KEY(cateIdVent) REFERENCES categoria (id_categoria)" >
+				<fk_column name="clieIdVent" pk="id_cliente" />
+			</fk>
+			<fk name="fk_ventas" to_schema="Default" to_table="categoria" >
+				<fk_column name="cateIdVent" pk="id_categoria" />
+			</fk>
+		</table>
+	</schema>
+	<connector name="Sqlite" database="Sqlite" driver_class="org.sqlite.JDBC" driver_jar="sqlite-jdbc-3.40.0.0.jar" driver_desc="Standard" host="localhost" port="7210" instance="C:/Users/fjjna/PycharmProjects/lionstock/database/lionstock.db" useSystemProxy="false" />
+	<layout name="Main Layout" id="Layout-1830" joined_routing="y" show_relation="columns" >
+		<entity schema="Default" name="categoria" color="BED3F4" x="592" y="96" />
+		<entity schema="Default" name="cliente" color="BED3F4" x="96" y="528" />
+		<entity schema="Default" name="compras" color="BED3F4" x="496" y="544" />
+		<entity schema="Default" name="producto" color="BED3F4" x="368" y="80" />
+		<entity schema="Default" name="proveedor" color="BED3F4" x="96" y="272" />
+		<entity schema="Default" name="rol" color="BED3F4" x="176" y="80" />
+		<entity schema="Default" name="users" color="BED3F4" x="48" y="96" />
+		<entity schema="Default" name="ventas" color="BED3F4" x="480" y="352" />
+		<group name="LIONSTOCK.DB" color="FFFFFF" >
+			<entity schema="Default" name="users" />
+			<entity schema="Default" name="rol" />
+			<entity schema="Default" name="proveedor" />
+			<entity schema="Default" name="producto" />
+			<entity schema="Default" name="categoria" />
+			<entity schema="Default" name="cliente" />
+			<entity schema="Default" name="compras" />
+			<entity schema="Default" name="ventas" />
+		</group>
+	</layout>
+	<layout name="~Layout with Sample Tools" id="Layout-2413" show_column_type="y" show_relation="columns" >
+		<entity schema="Default" name="categoria" color="BED3F4" x="864" y="48" />
+		<entity schema="Default" name="cliente" color="BED3F4" x="576" y="544" />
+		<entity schema="Default" name="compras" color="BED3F4" x="48" y="336" />
+		<entity schema="Default" name="compraspro" color="BED3F4" x="864" y="368" />
+		<entity schema="Default" name="producto" color="BED3F4" x="592" y="48" />
+		<entity schema="Default" name="proveedor" color="BED3F4" x="304" y="48" />
+		<entity schema="Default" name="rol" color="BED3F4" x="576" y="368" />
+		<entity schema="Default" name="users" color="BED3F4" x="304" y="336" />
+		<entity schema="Default" name="ventas" color="BED3F4" x="48" y="64" />
+		<script name="SQL Editor" id="Editor-c1d" language="SQL" >
+			<string><![CDATA[SELECT
+	id_producto, nombreProd, descProd, pVentaProd, pCompraProd, stockProd, sMaxProd, ubicaProd, provIdProd, cateIdProd, 
+	imgProd
+FROM
+	producto o;]]></string>
+		</script>
+		<browser id="Browse-a0" name="Relational Data Explorer" confirm_updates="y" >
+			<browse_table schema="Default" entity="producto" x="20" y="20" width="400" height="300" >
+				<browse_table schema="Default" entity="proveedor" fk="FK_producto proveedor" x="440" y="20" width="500" height="350" record_view="y" >
+					<browse_table schema="Default" entity="compras" fk="FK_compras proveedor" x="960" y="20" width="500" height="350" />
+				</browse_table>
+			</browse_table>
+		</browser>
+		<query id="Query-1619" name="Query Builder" >
+			<query_table schema="Default" name="producto" alias="p" x="48" y="48" >
+				<column name="id_producto" />
+				<column name="nombreProd" />
+				<column name="descProd" />
+				<column name="pVentaProd" />
+				<column name="pCompraProd" />
+				<column name="stockProd" />
+				<column name="sMaxProd" />
+				<column name="ubicaProd" />
+				<column name="provIdProd" />
+				<column name="cateIdProd" />
+				<column name="imgProd" />
+				<query_table schema="Default" name="proveedor" alias="p1" x="256" y="48" fk="FK_producto proveedor" type="Inner Join" >
+					<column name="id_proveedor" />
+					<column name="nombreProv" />
+					<column name="cifProv" />
+					<column name="direcProv" />
+					<column name="cpProv" />
+					<column name="locProv" />
+					<column name="emailProv" />
+					<column name="tfnoProv" />
+					<column name="userIdProv" />
+					<query_table schema="Default" name="compras" alias="c" x="464" y="48" fk="FK_compras proveedor" type="Inner Join" >
+						<column name="id_compra" />
+						<column name="cantidadComp" />
+						<column name="pUnidadComp" />
+						<column name="fechaComp" />
+						<column name="provIdComp" />
+						<column name="prodIdComp" />
+						<column name="cateIdComp" />
+					</query_table>
+				</query_table>
+			</query_table>
+		</query>
+		<form name="Report" id="Report-1978" template="Page" css="container-fluid" view="frame" >
+			<var name="samplePageNumber" type="4" value="0" mandatory="n" />
+			<var name="sampleRecordsPerPage" type="4" value="100" mandatory="n" />
+			<body name="Body" template="Grid" pos="0,0,0,0,f,f" layout="{{-2,-2,-2,-2,-1},{-2,-2,-2,-2}}" scroll="n" html="n" >
+				<cell type="label" name="Producto Data" template="H3" pos="0,0,1,0,l,c" />
+				<cell type="chart" name="Pie" template="Pie" pos="0,1,4,1,l,c" max_records="20" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="id_producto" type="4" />
+						<var name="nombreProd" />
+						<var name="descProd" />
+						<var name="pVentaProd" type="7" />
+						<var name="pCompraProd" type="7" />
+						<var name="stockProd" type="4" />
+						<var name="sMaxProd" type="4" />
+						<var name="ubicaProd" />
+						<var name="provIdProd" type="4" />
+						<var name="cateIdProd" type="4" />
+						<var name="imgProd" />
+						<script ><![CDATA[SELECT * FROM producto]]></script>
+					</form_script>
+					<param name="i0" value="descProd" />
+					<param name="width" value="100%" />
+					<param name="v0" value="pCompraProd" />
+					<param name="title" value="Sample Chart" />
+					<param name="height" value="400px" />
+				</cell>
+				<tableview name="sample" template="Table" css="table table-striped table-sm table-hover" pos="0,2,4,2,f,f" layout="{{-2,-2,-2,-2,-2,-2,-2},{-2,-2}}" scroll="n" html="n" header_rows="1" >
+					<form_script type="DataSource" language="SQL" >
+						<var name="id_producto" type="4" />
+						<var name="nombreProd" />
+						<var name="descProd" />
+						<var name="pVentaProd" type="7" />
+						<var name="pCompraProd" type="7" />
+						<var name="stockProd" type="4" />
+						<var name="sMaxProd" type="4" />
+						<var name="ubicaProd" />
+						<var name="provIdProd" type="4" />
+						<var name="cateIdProd" type="4" />
+						<var name="imgProd" />
+						<script ><![CDATA[SELECT * FROM producto]]></script>
+					</form_script>
+					<cell type="label" name="id_producto" pos="0,0,0,0,c,c" />
+					<cell type="label" name="nombreProd" pos="1,0,1,0,c,c" />
+					<cell type="label" name="descProd" pos="2,0,2,0,c,c" />
+					<cell type="label" name="pVentaProd" pos="3,0,3,0,c,c" />
+					<cell type="label" name="pCompraProd" pos="4,0,4,0,c,c" />
+					<cell type="label" name="stockProd" pos="5,0,5,0,c,c" />
+					<cell type="label" name="Button can open other pages." pos="6,0,6,0,c,c" />
+					<cell type="label" name="${id_producto}" template="Plain" pos="0,1,0,1,l,c" />
+					<cell type="label" name="${nombreProd}" template="Plain" pos="1,1,1,1,l,c" />
+					<cell type="label" name="${descProd}" template="Plain" pos="2,1,2,1,l,c" />
+					<cell type="label" name="${pVentaProd}" template="Plain" pos="3,1,3,1,l,c" />
+					<cell type="label" name="${pCompraProd}" template="Plain" pos="4,1,4,1,l,c" />
+					<cell type="label" name="${stockProd}" template="Plain" pos="5,1,5,1,l,c" />
+					<cell type="button" name="More" template="Plain" css="btn btn-sm btn-secondary" pos="6,1,6,1,c,c" ref_id="Report-1978" />
+				</tableview>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="0,3,0,3,l,c" glyph="bi-chevron_double_left" ref_id="Report-1978" >
+					<var name="samplePageNumber" value="0" />
+				</cell>
+				<cell type="href" name="" disabled="${samplePageNumber&lt;1}" pos="1,3,1,3,l,c" glyph="bi-chevron_left" ref_id="Report-1978" >
+					<var name="samplePageNumber" value="${Math.max(0,samplePageNumber-1)}" />
+				</cell>
+				<cell type="label" name="Page ${samplePageNumber+1}" pos="2,3,2,3,l,c" />
+				<cell type="href" name="" disabled="${!sampleHasNextPage}" pos="3,3,3,3,l,c" glyph="bi-chevron_right" ref_id="Report-1978" >
+					<var name="samplePageNumber" value="${( samplePageNumber+1 )}" />
+				</cell>
+			</body>
+		</form>
+	</layout>
+</project>

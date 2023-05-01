@@ -1,0 +1,116 @@
+{% extends './home.html' %}
+
+{% block body %}
+<div class="container rounded bg-white mt-1 mb-1">
+    <h3 class="h3 mt-2 mb-2 fw-normal">Datos Producto</h3>
+
+    <form action="/admin_altaproducto" enctype="multipart/form-data" method="POST">
+            <div class="col-md-12 border-left border-right">
+                <div class="p-3 py-10">
+                    {{form.hidden_tag()}}
+                     <div class="row">
+                        <div class="col-8 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.nombre (class="form-control")}}
+                                {{form.nombre.label}}
+                             </div>
+                        </div>
+                        <div class="col-4 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.categoria (class="form-select")}}
+                                {{form.categoria.label}}
+                            </div>
+
+                        </div>
+                     </div>
+
+
+                     <div class="form-floating mb-2">
+                        {{form.descripcion (class="form-control")}}
+                         {{form.descripcion.label}}
+                     </div>
+
+                     <div class="row">
+                        <div class="col-6 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.proveedor (class="form-select")}}
+                                {{form.proveedor.label}}
+                             </div>
+                        </div>
+                        <div class="col-6 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.ubicacion (class="form-control")}}
+                                {{form.ubicacion.label}}
+                            </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-3 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.precio_venta  (class="form-control")}}
+                                {{form.precio_venta.label}}
+                            </div>
+                        </div>
+                        <div class="col-3 md-6">
+                            <div class="form-floating mb-2 ">
+                                {{form.precio_compra (class="form-control")}}
+                                {{form.precio_compra.label}}
+                            </div>
+                        </div>
+                         <div class="col-3 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.stock (class="form-control")}}
+                                  {{form.stock.label}}
+                            </div>
+                        </div>
+                          <div class="col-3 md-6">
+                            <div class="form-floating mb-2">
+                                {{form.stockmax (class="form-control")}}
+                                {{form.stockmax.label}}
+                            </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-2 md-16">
+                            {% with messages = get_flashed_messages() %}
+                                {% if messages %}
+                                {% for message in messages %}
+
+                                <div class="alert alert-dismissible alert-danger" role="alert">
+                                  <strong>{{message}}</strong>
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+                                {% endwith %}
+
+
+
+                                <img class="img-fluid  rounded border border-dark mt-1" style="width: 150px;" src="{{url_for('static', filename='img/noimagen.png')}}" alt="">
+
+                        </div>
+                        <div class="col-1 md-6">
+                            {{ form.imagen(class="form-control-file") }}
+
+                        </div>
+
+                     </div>
+                </div>
+
+
+
+
+
+            </div>
+            <div class="row">
+                <div class="text-center mb-2">
+                    {{form.submit (class="btn btn-primary profile-button")}}
+                    <a class="btn btn-primary"  href="/admin_productos">Cancelar</a>
+
+
+                </div>
+            </div>
+
+    </form>
+</div>
+{% endblock %}

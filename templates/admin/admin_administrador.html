@@ -1,0 +1,116 @@
+{% extends './home.html' %}
+
+{% block body %}
+
+
+<div class="container rounded bg-white mt-1 mb-1 ">
+    <h3 class="h3 mt-2 mb-2 fw-normal">Usuarios Administradores</h3>
+
+    <form action="/admin_administrador" method="POST">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+
+        <div class="alert alert-dismissible alert-danger" role="alert">
+          <strong>{{message}}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+
+
+        <table id="tablaprod" class="table table-bordered border-black display responsive nowrap">
+            {{form.hidden_tag()}}
+            <thead style="background-color:rgba(253,126,20,0.65); " >
+
+                    <th>{{form.id.label()}}</th>
+                    <th>{{form.username.label()}}</th>
+
+                    <th class="all" data-orderable="false";">Acciones</th>
+                </thead>
+                <tbody>
+                    {% for user in usuarios: %}
+
+                    <tr>
+
+                        <td align="right">{{user.id}}</td>
+                        <td align="left">{{user.username}}</td>
+
+
+                        <td>
+
+                            <a href="#" style="text-decoration:none" data-toggle="tooltip" title="Eliminar">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+        </table>
+        <div class="row">
+                <div class="text-center mb-2">
+                    {{form.submit (class="btn btn-primary profile-button")}}
+
+                     <a class="btn btn-primary"  href="/home">Cerrar</a>
+
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+<!-- Modal -->
+
+
+
+        <!-- JQUERY -->
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+        <!-- DATATABLES -->
+        <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <!-- BOOTSTRAP -->
+        <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
+
+
+        <script>
+            $(document).ready(function () {
+                $('#tablaprod').DataTable({
+                    language: {
+
+                        processing: "Tratamiento en curso...",
+                        search: "Buscar:",
+                        lengthMenu: "Agrupar de _MENU_ items",
+                        info: "Mostrando del registro _START_ al _END_ de un total de _TOTAL_ registros",
+                        lengthMenu: "Agrupar de _MENU_ items",
+                        infoEmpty: "No existen datos.",
+                        infoFiltered: "(filtrado de _MAX_ elementos en total)",
+                        infoPostFix: "",
+                        loadingRecords: "Cargando...",
+                        zeroRecords: "No se encontraron datos con tu busqueda",
+                        emptyTable: "No hay datos disponibles en la tabla.",
+                        paginate: {
+                            first: "Primero",
+                            previous: "Anterior",
+                            next: "Siguiente",
+                            last: "Ultimo"
+                        },
+                        aria: {
+                            sortAscending: ": active para ordenar la columna en orden ascendente",
+                            sortDescending: ": active para ordenar la columna en orden descendente"
+                        }
+                    },
+                    scrollY: 400,
+                    lengthMenu: [ [10, 20, -1], [10, 20, "Todos"] ],
+                });
+            });
+        </script>
+
+{% endblock %}
+

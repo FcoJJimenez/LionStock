@@ -1,0 +1,28 @@
+{% extends './home.html' %}
+
+
+{% block body %}
+<div class="container rounded bg-white mt-1 mb-1">
+    <h3 class="h3 mt-2 mb-2 fw-normal">Gr&aacute;ficas</h3>
+
+        {% if benef==False %}
+            <h4> No hay información suficiente para generar el gráfico de Bº</h4>
+        {% else %}
+            <img src="{{ url_for('static', filename='graph/admin_10Benef.png') }}" >
+        {% endif %}
+
+
+        {% if ventas==False %}
+            <h4> No hay información suficiente para generar el gráfico de Ventas</h4>
+        {% else %}
+            <img src="{{ url_for('static', filename='graph/admin_10ventas.png') }}" >
+        {% endif %}
+
+        {% if compras==False %}
+            <h4> No hay información suficiente para generar el gráfico de Compras</h4>
+        {% else %}
+            <img src="{{ url_for('static', filename='graph/admin_10compras.png') }}">
+        {% endif %}
+
+</div>
+{% endblock %}

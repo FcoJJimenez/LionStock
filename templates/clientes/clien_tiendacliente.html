@@ -1,0 +1,128 @@
+{% extends './home.html' %}
+{% block body %}
+<div class="container rounded bg-white mt-1 mb-1">
+    <h3 class="h3 mt-2 mb-2 fw-normal ">Productos</h3>
+
+    <form class="row " action="/clien_tiendacliente" method="POST">
+        <div id="carrito">
+            <h1 class="h3 mt-2 mb-2 fw-normal text-start">Carrito</h1>
+            <div class=" container-fluid col-md-12 ">
+                {{form.hidden_tag()}}
+                <!--% if total>0 %-->
+                <div class="list-group col-md-8">
+
+                  <table class="table table-bordered">
+                      <tr>
+                        <th>NOMBRE</th>
+                        <th width="10%">CANT.</th>
+                        <th width="15%">PRECIO</th>
+                        <th width="15%">TOTAL</th>
+                        <th width="10%"></th>
+                      </tr>
+                    {% for art in datos_carrito %}
+
+                    <tr>
+                      <td align="left">{{art.get("producto")}}</td>
+                      <td>{{art.get("cantidad")}}</td>
+                      <td align="right">{{"%.2f"|format(art.get("pvp"))}}</td>
+                      <td align="right">{{"%.2f"|format(art.get("cantidad")*art.get("pvp"))}}</td>
+                      <!--<td><a href="url_for('carrito_delete',id=art.0.id)"><span class="glyphicon glyphicon-trash"></span> Borrar</a></td>-->
+                      <td>
+                          <a href="/clien_deleteproducto/{{art.get('id')}}" style="text-decoration:none" data-toggle="tooltip" title="Eliminar">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="red" class="bi bi-trash" viewBox="0 0 16 16">
+                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                </svg>
+                            </a>
+                      </td>
+
+
+
+
+                    </tr>
+
+
+                      {% endfor %}
+                  <a class="btn btn-primary"  href="/clien_comprarcarro">Comprar</a>
+                  </table>
+                  {% if total > 0 %}
+                        <h5>TOTAL CARRITO: {{"%.2f"|format(total) }} €</h5>
+                  {% else %}
+                    <h5>No hay artículos en el carrito</h5>
+                  {% endif %}
+
+                </div>
+                <!--% else %-->
+
+                <!--% endif %-->
+
+
+        </div>
+        </div>
+        <div id="productos">
+
+            <div class="col-md-12 border-left border-right">
+
+            <div class="row">
+                <div class="col-md-2">
+                   {{form.categoria (class="form-select")}}
+                </div>
+                <div class="col-md-2">
+                    {{form.submit (class="btn btn-primary profile-button")}}
+                </div>
+            </div>
+
+            <div class="row mt-2">
+            {% for prod in productos: %}
+                <div class="col-lg-3 col-sm-6 col-xs-12 my-auto">
+                    <div class="card mb-3 " style="max-width: 350px; ">
+                         <div class="d-flex align-items-center row g-0">
+                             <div class="card-title">
+                                <h5 class="card-title">{{prod.nombreProd}}</h5>
+                             </div>
+                             <div>
+                                <p class="card-text text-truncate" >{{prod.descProd}}</p>
+                             </div>
+
+                            <div class="col-md-4 ">
+                                <img src="{% if prod.imgProd %}{{prod.imgProd}}{% else %}{{url_for('static', filename='img/noimagen.png')}} {% endif %}" class="img-fluid p-1 rounded-start" alt="...">
+
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <p class="card-text">Precio: {{"%.2f"|format(prod.pVentaProd)}}€</p>
+                                        <small class="text-muted">
+                                            {% if prod.stockProd > 1 %}
+                                            <span class="badge bg-success">stock</span>
+
+                                            {% else %}
+                                            <span class="badge bg-danger">sin stock</span>
+                                            {% endif %}
+                                        </small>
+                                    {% if prod.stockProd > 1 %}
+                                    <a href="/clien_comprarproducto/{{prod.id_producto}}" class="btn btn-outline-secondary">Comprar</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+
+            </div>
+
+        </div>
+        </div>
+
+
+        <div class="row">
+                <div class="text-center mb-2">
+                    <!--form.submit (class="btn btn-primary profile-button")-->
+
+                    <a class="btn btn-primary" href="/home">Cancelar</a>
+                </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

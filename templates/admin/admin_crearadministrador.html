@@ -1,0 +1,64 @@
+{% extends './home.html' %}
+{% block body %}
+
+
+<div class="container rounded bg-white mt-1 mb-1">
+    <h3 class="h3 mt-2 mb-2 fw-normal">Datos nuevo Administrador</h3>
+
+    {% for error in form.username.errors %}
+       <div class="alert alert-dismissible alert-danger" role="alert">
+            <strong>{{error}}</strong>
+           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+       </div>
+
+    {% endfor %}
+    {% for error in form.password.errors %}
+       <div class="alert alert-dismissible alert-danger" role="alert">
+            <strong>{{error}}</strong>
+           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" ></button>
+       </div>
+    {% endfor %}
+    <form action="/admin_crearadministrador"  method="POST">
+
+        <div class="col-md-12 border-left border-right">
+            <div class="p-3 py-10">
+                {{form.hidden_tag()}}
+
+                <div class="row">
+                    <div class="col-6 md-6">
+                        <div class="form-floating mb-2">
+                            {{form.username (class="form-control")}}
+                             <th>{{form.username.label()}}</th>
+                        </div>
+                    </div>
+                </div>
+
+               <div class="row">
+                    <div class="col-6 md-6">
+                        <div class="form-floating mb-2">
+                            {{form.password (class="form-control")}}
+                             <th>{{form.password.label()}}</th>
+                        </div>
+                    </div>
+                    <div class="col-6 md-6">
+                        <div class="form-floating mb-2">
+                            {{form.confirm (class="form-control")}}
+                            <th>{{form.confirm.label()}}</th>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="text-center mb-2">
+                    {{form.submit (class="btn btn-primary profile-button")}}
+
+                    <a class="btn btn-primary" href="/admin_administrador">Cancelar</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
